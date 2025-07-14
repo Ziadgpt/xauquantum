@@ -2,7 +2,7 @@ from strategies.statistical.kalman_filter import kalman_deviation_signal
 from strategies.technical.rsi2 import rsi2_signal
 from strategies.technical.impulse_detector import impulse_detector_signal
 from strategies.technical.adx_pullback import adx_pullback_signal
-from strategies.statistical.zscore_reversion import zscore_reversion_signal
+from strategies.statistical.zscore import zscore_reversion_signal
 
 def generate_alpha_signals(candles):
     return {
