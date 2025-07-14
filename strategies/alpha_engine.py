@@ -13,8 +13,10 @@ def generate_alpha_signals(df):
     df = detect_hh_ll_breakout(df)
     print(type(df))
     df = zscore_reversion_signal(df)
-    print(type(df))
+    print(f"Before kalman: type={type(df)} shape={df.shape}")
     df = kalman_deviation_signal(df)
+    print(f"After kalman: type={type(df)}")
+
     print(type(df))  # If this is int, problem!
 
     return {
