@@ -3,7 +3,7 @@ import streamlit as st
 import plotly.express as px
 
 # Load backtest results
-df = pd.read_csv("labeled_trades.csv")
+df = pd.read_csv("logs/labeled_trades.csv")
 
 st.set_page_config(layout="wide")
 st.title("📊 XAUQuantum Backtest Dashboard")

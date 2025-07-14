@@ -13,7 +13,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 # === Load and prepare data ===
-df = pd.read_csv("labeled_trades.csv")
+df = pd.read_csv("logs/labeled_trades.csv")
 
 # Ensure there are enough samples
 if len(df) < 10:
