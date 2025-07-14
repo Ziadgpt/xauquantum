@@ -42,6 +42,7 @@ def backtest_and_label(candles, tp_pct=0.002, sl_pct=0.001):
             "impulse_signal": signals.get("impulse_signal", 0),
             "zscore_signal": signals.get("zscore_signal", 0),
             "kalman_filter_signal": signals.get("kalman_filter_signal", 0),
+            "macd_bb_signal": signals.get("macd_bb_signal", 0),  # ✅ Add this
             "regime": regime,
             "label": label
         }
