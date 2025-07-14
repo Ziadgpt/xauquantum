@@ -7,10 +7,15 @@ from strategies.statistical.kalman_filter import kalman_deviation_signal
 
 def generate_alpha_signals(df):
     df = apply_rsi2(df)
+    print(type(df))  # should be pd.DataFrame
     df = apply_macd_bollinger(df)
+    print(type(df))
     df = detect_hh_ll_breakout(df)
+    print(type(df))
     df = zscore_reversion_signal(df)
-    df = kalman_deviation_signal(df)  # ✅ Pass `df` here
+    print(type(df))
+    df = kalman_deviation_signal(df)
+    print(type(df))  # If this is int, problem!
 
     return {
         "rsi_signal": df.iloc[-1].get("signal", 0),
