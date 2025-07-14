@@ -5,7 +5,6 @@ import plotly.graph_objs as go
 from core.data_loader import fetch_live_data
 from strategies.alpha_engine import generate_alpha_signals
 from ml.model import predict_trade_signal
-from filters.volatilty import forecast_volatility
 from filters.regime import detect_market_regime
 from config.settings import CONFIG
 
@@ -16,9 +15,8 @@ st.title("💎 XAUQuantum Dashboard")
 # Load live data
 candles = fetch_live_data(CONFIG["symbol"], timeframe="15m", lookback=150)
 signals = generate_alpha_signals(candles)
-forecasted_vol = forecast_volatility(candles)
 regime = detect_market_regime(candles)
-decision = predict_trade_signal(signals, regime, forecasted_vol)
+decision = predict_trade_signal(signals, regime)
 
 # === Chart ===
 st.subheader("📈 XAUUSD Price (15m)")
@@ -40,7 +38,6 @@ st.write(pd.DataFrame([signals]))
 
 # === Regime + Volatility ===
 st.subheader("📉 Market Conditions")
-st.metric("Forecasted Volatility", f"{forecasted_vol:.2%}")
 st.metric("Market Regime", str(regime))
 
 # === ML Decision ===

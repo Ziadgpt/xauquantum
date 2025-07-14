@@ -1,6 +1,5 @@
 import pandas as pd
 from strategies.alpha_engine import generate_alpha_signals
-from filters.volatilty import forecast_volatility
 from filters.regime import detect_market_regime
 
 def backtest_and_label(candles, tp_pct=0.002, sl_pct=0.001):
@@ -15,7 +14,6 @@ def backtest_and_label(candles, tp_pct=0.002, sl_pct=0.001):
             continue
 
         signals = generate_alpha_signals(window)
-        volatility = forecast_volatility(window)
         regime = detect_market_regime(window)
 
         entry_price = window["close"].iloc[-1]
@@ -32,7 +30,6 @@ def backtest_and_label(candles, tp_pct=0.002, sl_pct=0.001):
             "rsi_signal": signals["rsi_signal"],
             "adx_pullback": signals["adx_pullback"],
             "impulse_signal": signals["impulse_signal"],
-            "volatility": volatility,
             "regime": regime,
             "label": label
         })

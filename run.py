@@ -3,7 +3,6 @@ if __name__ == "__main__":
     from strategies.alpha_engine import generate_alpha_signals
     from ml.model import predict_trade_signal
     from execution.trade_executor import execute_trade
-    from filters.volatility import forecast_volatility
     from filters.regime import detect_market_regime
 
     candles = fetch_live_data("XAUUSD", timeframe="15m", lookback=200)
@@ -12,12 +11,10 @@ if __name__ == "__main__":
         print("⚠️ Not enough candle data to generate signals.")
     else:
         signals = generate_alpha_signals(candles)
-        volatility = forecast_volatility(candles)
         regime = detect_market_regime(candles)
 
         features = {
             **signals,
-            "volatility": volatility,
             "regime": regime
         }
 
