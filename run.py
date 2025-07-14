@@ -5,7 +5,7 @@ if __name__ == "__main__":
     from execution.trade_executor import execute_trade
     from filters.regime import detect_market_regime
 
-    candles = fetch_live_data("XAUUSD", timeframe="15m", lookback=200)
+    candles = fetch_live_data("XAUUSDc", timeframe="15m", lookback=200)
 
     if len(candles) < 100:
         print("⚠️ Not enough candle data to generate signals.")
