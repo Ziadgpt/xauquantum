@@ -10,7 +10,6 @@ def execute_trade(decision):
         print("❌ Failed to connect to MT5 for execution.")
         return
 
-    # Get latest price data
     symbol_info = mt5.symbol_info(symbol)
     if symbol_info is None:
         print(f"❌ Symbol {symbol} not found.")
@@ -18,12 +17,19 @@ def execute_trade(decision):
         return
 
     if not symbol_info.visible:
-        mt5.symbol_select(symbol, True)
+        if not mt5.symbol_select(symbol, True):
+            print(f"❌ Failed to select symbol {symbol}.")
+            mt5.shutdown()
+            return
 
-    price = mt5.symbol_info_tick(symbol).ask if decision["action"] == "buy" else mt5.symbol_info_tick(symbol).bid
+    tick = mt5.symbol_info_tick(symbol)
+    if tick is None:
+        print(f"❌ Failed to get tick for {symbol}.")
+        mt5.shutdown()
+        return
 
-    order_type = mt5.ORDER_TYPE_BUY if decision["action"] == "buy" else mt5.ORDER_TYPE_SELL
-    deviation = 20
+    price = tick.ask if decision["action"].lower() == "buy" else tick.bid
+    order_type = mt5.ORDER_TYPE_BUY if decision["action"].lower() == "buy" else mt5.ORDER_TYPE_SELL
 
     request = {
         "action": mt5.TRADE_ACTION_DEAL,
@@ -31,24 +37,26 @@ def execute_trade(decision):
         "volume": lot,
         "type": order_type,
         "price": price,
-        "deviation": deviation,
+        "deviation": 20,
         "magic": 123456,
         "comment": "XAUQuantum trade",
         "type_time": mt5.ORDER_TIME_GTC,
-        "type_filling": mt5.ORDER_FILLING_FOK
+        "type_filling": mt5.ORDER_FILLING_FOK,
     }
 
     result = mt5.order_send(request)
     mt5.shutdown()
 
     if result.retcode != mt5.TRADE_RETCODE_DONE:
-        print(f"❌ Trade failed: {result.retcode}")
+        print(f"❌ Trade failed with retcode={result.retcode}")
+        # Optionally add detailed error explanation here
     else:
-        print("✅ Trade Executed:", result)
+        print(f"✅ Trade executed successfully: {result}")
         log_trade({
             "symbol": symbol,
             "action": decision["action"],
             "price": price,
             "volume": lot,
-            "confidence": decision.get("confidence", 0)
+            "confidence": decision.get("confidence", 0),
+            "order_id": result.order
         })

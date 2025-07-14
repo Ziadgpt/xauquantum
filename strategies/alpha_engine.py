@@ -1,15 +1,21 @@
-from strategies.statistical.kalman_filter import kalman_deviation_signal
-from strategies.technical.rsi2 import rsi2_signal
-from strategies.technical.impulse_detector import impulse_detector_signal
-from strategies.technical.adx_pullback import adx_pullback_signal
+from strategies.technical.momentum import apply_rsi2
+from strategies.technical.macd_bollinger import apply_macd_bollinger
+from strategies.technical.structure_breakout import detect_hh_ll_breakout
 from strategies.statistical.zscore import zscore_reversion_signal
+from strategies.statistical.kalman_filter import kalman_deviation_signal
 
-def generate_alpha_signals(candles):
+
+def generate_alpha_signals(df):
+    df = apply_rsi2(df)
+    df = apply_macd_bollinger(df)
+    df = detect_hh_ll_breakout(df)
+    df = zscore_reversion_signal(df)
+    df = kalman_deviation_signal(df)  # ✅ Pass `df` here
+
     return {
-        "rsi_signal": rsi2_signal(candles),
-        "adx_pullback": adx_pullback_signal(candles),
-        "impulse_signal": impulse_detector_signal(candles),
-        "zscore_signal": zscore_reversion_signal(candles),
-        "kalman_dev": kalman_deviation_signal(candles),
-
+        "rsi_signal": df.iloc[-1].get("signal", 0),
+        "macd_bb_signal": df.iloc[-1].get("signal_macd_bb", 0),
+        "structure_signal": df.iloc[-1].get("signal_structure", 0),
+        "zscore_signal": df.iloc[-1].get("signal_zscore", 0),
+        "kalman_filter_signal": df.iloc[-1].get("kalman_deviation_signal", 0),
     }
