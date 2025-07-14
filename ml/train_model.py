@@ -10,7 +10,7 @@ import seaborn as sns
 import os
 
 # === Load and prepare data ===
-df = pd.read_csv("../labeled_trades.csv")
+df = pd.read_csv("labeled_trades.csv")
 
 # Features and label
 X = df.drop(columns=["label"])
