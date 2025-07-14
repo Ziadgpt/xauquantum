@@ -9,7 +9,6 @@ import warnings
 
 warnings.filterwarnings("ignore")
 
-# Load labeled data
 df = pd.read_csv("logs/labeled_trades.csv")
 
 if len(df) < 10:
@@ -21,8 +20,7 @@ features = [
     "structure_signal",
     "zscore_signal",
     "kalman_filter_signal",
-    "regime",
-    "volatility"
+    "regime"
 ]
 
 for f in features:
@@ -47,7 +45,7 @@ except ValueError:
 model = xgb.XGBClassifier(
     n_estimators=150,
     max_depth=6,
-    scale_pos_weight= y.value_counts()[0] / y.value_counts()[1],  # Handle imbalance
+    scale_pos_weight=y.value_counts()[0] / y.value_counts()[1],
     use_label_encoder=False,
     eval_metric="logloss",
     random_state=42
@@ -69,7 +67,7 @@ if len(set(y_test)) == 2:
 
     plt.figure(figsize=(6, 4))
     plt.plot(fpr, tpr, label="ROC Curve", color="green")
-    plt.plot([0,1], [0,1], "--", color="gray")
+    plt.plot([0, 1], [0, 1], "--", color="gray")
     plt.title("ROC Curve")
     plt.xlabel("False Positive Rate")
     plt.ylabel("True Positive Rate")

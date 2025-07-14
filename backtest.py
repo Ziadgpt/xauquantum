@@ -10,9 +10,9 @@ os.makedirs("logs", exist_ok=True)
 def backtest_and_label(candles, tp_pct=0.002, sl_pct=0.001):
     rows = []
 
-    for i in range(100, len(candles) - 2):  # Skip warmup and out-of-bounds
+    for i in range(100, len(candles) - 2):
         window = candles.iloc[:i].copy()
-        future = candles.iloc[i + 1:i + 3]  # Lookahead 2 candles
+        future = candles.iloc[i + 1:i + 3]
 
         if len(future) < 2:
             continue
@@ -28,7 +28,6 @@ def backtest_and_label(candles, tp_pct=0.002, sl_pct=0.001):
         high_future = future["high"].max()
         low_future = future["low"].min()
 
-        # Label logic
         if high_future >= entry_price * (1 + tp_pct):
             label = 1
         elif low_future <= entry_price * (1 - sl_pct):
@@ -38,11 +37,10 @@ def backtest_and_label(candles, tp_pct=0.002, sl_pct=0.001):
 
         row = {
             "rsi_signal": signals.get("rsi_signal", 0),
-            "adx_pullback": signals.get("adx_pullback", 0),
-            "impulse_signal": signals.get("impulse_signal", 0),
             "zscore_signal": signals.get("zscore_signal", 0),
             "kalman_filter_signal": signals.get("kalman_filter_signal", 0),
-            "macd_bb_signal": signals.get("macd_bb_signal", 0),  # ✅ Add this
+            "macd_bb_signal": signals.get("macd_bb_signal", 0),
+            "structure_signal": signals.get("structure_signal", 0),
             "regime": regime,
             "label": label
         }
@@ -50,7 +48,7 @@ def backtest_and_label(candles, tp_pct=0.002, sl_pct=0.001):
         rows.append(row)
 
     df = pd.DataFrame(rows)
-    df.fillna(0, inplace=True)  # Ensure no NaNs
+    df.fillna(0, inplace=True)
     df.to_csv("logs/labeled_trades.csv", index=False)
     print(f"✅ Backtest complete: {len(df)} samples saved to logs/labeled_trades.csv")
 
