@@ -3,7 +3,7 @@ if __name__ == "__main__":
     from strategies.alpha_engine import generate_alpha_signals
     from ml.model import predict_trade_signal
     from execution.trade_executor import execute_trade
-    from filters.volatility import forecast_volatility
+    from filters.volatilty import forecast_volatility
     from filters.regime import detect_market_regime
     from config.settings import CONFIG
 
