@@ -1,8 +1,9 @@
 import MetaTrader5 as mt5
 import pandas as pd
 from datetime import datetime
-
+symbol = "XAUUSDc"
 def fetch_live_data(symbol, timeframe="15m", lookback=200):
+
     tf_map = {
         "1m": mt5.TIMEFRAME_M1,
         "5m": mt5.TIMEFRAME_M5,
