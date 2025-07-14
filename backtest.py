@@ -39,3 +39,9 @@ def backtest_and_label(candles, tp_pct=0.002, sl_pct=0.001):
     df = pd.DataFrame(rows)
     df.to_csv("logs/labeled_trades.csv", index=False)
     print(f"✅ Backtest complete: {len(df)} samples saved to logs/labeled_trades.csv")
+
+if __name__ == "__main__":
+    from core.data_loader import fetch_live_data
+
+    candles = fetch_live_data("XAUUSDc", timeframe="15m", lookback=2000)
+    backtest_and_label(candles)
