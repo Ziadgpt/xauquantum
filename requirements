@@ -1,0 +1,13 @@
+pandas
+numpy
+scikit-learn
+matplotlib
+plotly
+streamlit
+arch               # GARCH model
+hmmlearn           # Regime detection (HMM)
+MetaTrader5        # Live MT5 data and trading (Windows only)
+xgboost            # Advanced ML classifier
+shap               # Model explainability
+joblib             # For saving/loading trained models
+pykalman

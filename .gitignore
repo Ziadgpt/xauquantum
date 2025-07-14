@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.pyc
+
+# Envs
+venv/
+.env
+
+# Models & Data
+logs/
+models/
+*.pkl
+*.csv
+
+# MT5 & Windows artifacts
+*.ex5
+*.log
+*.mq5
+*.mqh
+
+# Jupyter & Streamlit
+.ipynb_checkpoints/
+.streamlit/
+
+# OS
+.DS_Store
+Thumbs.db
